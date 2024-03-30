@@ -44,6 +44,8 @@ function! ctrlspace#keys#common#Init() abort
     call s:map("ToggleBookmarkMode",           "b")
     call s:map("ToggleBookmarkModeAndSearch",  "B")
 
+    call s:map("CountPrefix2",                 "2")
+
     let keyMap  = ctrlspace#keys#KeyMap()
     let helpMap = ctrlspace#help#HelpMap()
 
@@ -289,6 +291,26 @@ endfunction
 
 function! ctrlspace#keys#common#ToggleBookmarkModeAndSearch(k) abort
     return s:toggleListViewAndSearch(a:k, "Bookmark")
+endfunction
+
+function! ctrlspace#keys#common#CountPrefix2(k) abort
+  let count = 0
+  let key = input('Press key:' )
+  let mapping = maparg(key, 'n')
+
+  if !empty(mapping)
+    " Extract the function name from the mapping
+    let function_name = substitute(mapping, '<CR>', '', '')
+
+    " Execute the function
+    while count < 2
+      execute function_name
+      let count += 1
+    endwhile
+  else
+    echo "No mapping found for key: " . a:key
+  endif
+  return 1
 endfunction
 
 function! ctrlspace#keys#common#ToggleBookmarkMode(k) abort
